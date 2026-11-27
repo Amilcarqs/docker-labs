@@ -1,7 +1,7 @@
 # Vacaciones
 
 **Nivel:** Muy fácil  
-**Autor:** Ammilcarqs  
+**Autor:** Amilcarqs  
 **Laboratorio:** Vacaciones
 
 ## Objetivo
