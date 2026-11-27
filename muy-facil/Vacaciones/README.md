@@ -42,19 +42,31 @@ Se identificaron estos puertos:
 - `22/tcp`: SSH, OpenSSH 7.6p1 en Ubuntu.
 - `80/tcp`: HTTP, Apache 2.4.29 en Ubuntu.
 
-El servicio web no mostraba contenido visible ni un título HTML. Aun así, conviene revisar tanto la página como su código fuente: el HTML contenía un comentario que mencionaba a **Juan** y **Camilo**, además de indicar que había un correo importante.
+El servicio web no mostraba contenido visible ni un título HTML. 
+<img src="imagenes/3.png" alt="">
+
+Aun así, conviene revisar tanto la página como su código fuente: el HTML contenía un comentario que mencionaba a **Juan** y **Camilo**, además de indicar que había un correo importante.
+<img src="imagenes/4.png" alt="">
 
 ### 3. Revisar las rutas web
-
+Revisamos mas el sitio con escaneos con dirsearch:
 Se puede hacer una enumeración de contenido para buscar rutas accesibles. En este caso se encontró `/javascript/`, pero al visitarla el servidor respondió `403 Forbidden`. No se identificaron otras páginas útiles en esta etapa.
+<img src="imagenes/5.png" alt="">
 
 Un código `403` indica que el servidor deniega el acceso a esa ruta; por sí solo no demuestra que exista una vulnerabilidad.
+<img src="imagenes/6.png" alt="">
 
 ### 4. Relacionar las pistas con las cuentas
 
-La pista del comentario HTML dirige la investigación hacia las cuentas de Juan y Camilo. En el contexto aislado del laboratorio, la validación de credenciales para la cuenta indicada permitió obtener acceso SSH como **Camilo**.
+Pasamos a revisar el puerto 22 probando con los usuarios que encontramos en la linea comentada: Juan y Camilo
 
-No se incluyen aquí contraseñas ni instrucciones de fuerza bruta. En una entrega revisable, registra la evidencia de que el acceso corresponde a la instancia del laboratorio y evita reutilizar o publicar credenciales.
+Al no tener la contraseña probaremos con fuerza bruta, y probaremos Camilo porque la linea comentada dice 'De : Juan Para: Camilo ', entonces camilo puede tener el correo recibido.
+
+<img src="imagenes/7.png" alt="">
+
+Obtenemos el password y probamos en ssh logrando acceder con el usuario camilo
+
+<img src="imagenes/8.png" alt="">
 
 ### 5. Examinar los archivos disponibles para Camilo
 
@@ -66,17 +78,23 @@ ls -la /var/mail
 ls -la /var/mail/camilo
 cat /var/mail/camilo/correo.txt
 ```
+<img src="imagenes/9.png" alt="">
 
-Camilo no tenía permisos para ejecutar comandos con `sudo`. Sin embargo, el correo en `/var/mail/camilo/correo.txt` contenía una pista que permitía autenticar una sesión SSH como **Juan**. No copies el secreto del correo en esta documentación.
+Camilo no tenía permisos para ejecutar comandos con `sudo`. 
+<img src="imagenes/10.png" alt="">
+Sin embargo, el correo en `/var/mail/camilo/correo.txt` contenía una pista que permitía autenticar una sesión SSH como **Juan**. 
+
+<img src="imagenes/11.png" alt="">
 
 ### 6. Revisar los permisos de Juan
-
+Accedemos con el usuario juan :
+<img src="imagenes/12.png" alt="">
 Con acceso a la cuenta de Juan, consulta la configuración de `sudo`:
 
 ```bash
 sudo -l
 ```
-
+<img src="imagenes/13.png" alt="">
 La salida mostraba que Juan podía ejecutar `/usr/bin/ruby` como `root` sin solicitar contraseña. La autorización de un intérprete de propósito general con privilegios elevados permite ejecutar acciones como administrador y debe considerarse una configuración insegura.
 
 En el laboratorio, utiliza esa autorización para demostrar la escalada de privilegios y confirma el resultado con:
@@ -84,7 +102,7 @@ En el laboratorio, utiliza esa autorización para demostrar la escalada de privi
 ```bash
 whoami
 ```
-
+<img src="imagenes/14.png" alt="">
 La comprobación final devuelve `root`. No ejecutes esta técnica fuera de la instancia autorizada.
 
 ## Resultado
