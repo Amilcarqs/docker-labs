@@ -25,7 +25,7 @@ Desde el directorio que contiene el script y el archivo del laboratorio, iniciar
 ```bash
 sudo bash auto_deploy.sh vacaciones.tar
 ```
-
+[[imagenes/1.png]]
 Anota la dirección IP asignada; en las evidencias de esta ejecución fue `172.17.0.2`.
 
 ### 2. Enumerar los servicios
