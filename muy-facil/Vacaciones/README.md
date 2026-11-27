@@ -25,7 +25,8 @@ Desde el directorio que contiene el script y el archivo del laboratorio, iniciar
 ```bash
 sudo bash auto_deploy.sh vacaciones.tar
 ```
-[[imagenes/1.png]]
+<img src="imagenes/1.png" alt="">
+
 Anota la dirección IP asignada; en las evidencias de esta ejecución fue `172.17.0.2`.
 
 ### 2. Enumerar los servicios
@@ -35,7 +36,7 @@ Realiza un escaneo de servicios y versiones sobre la IP del laboratorio:
 ```bash
 nmap -sC -sV 172.17.0.2
 ```
-
+<img src="imagenes/2.png" alt="">
 Se identificaron estos puertos:
 
 - `22/tcp`: SSH, OpenSSH 7.6p1 en Ubuntu.
